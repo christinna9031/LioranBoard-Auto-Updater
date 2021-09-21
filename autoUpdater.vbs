@@ -1,4 +1,10 @@
-'force console and show progress bar
+set xHttp = CreateObject("Microsoft.XMLHTTP")
+set bStrm = CreateObject("Adodb.Stream")
+set filesys = CreateObject("Scripting.FileSystemObject")
+set objShell = CreateObject("Shell.Application")
+set objWMIService = GetObject ("winmgmts:")
+
+'function to force console and show progress bar
 Function printi(txt)
     WScript.StdOut.Write txt
 End Function    
@@ -39,34 +45,34 @@ Function ForceConsole()
     End If
 End Function
 
-set xHttp = CreateObject("Microsoft.XMLHTTP")
-set bStrm = CreateObject("Adodb.Stream")
-set filesys = CreateObject("Scripting.FileSystemObject")
-set objShell = CreateObject("Shell.Application")
-set objWMIService = GetObject ("winmgmts:")
+'Set Path
+path = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName)
+'Set new folder name to current date
+d = Date()
+dateStr = Year(d) & "-" & Right("00" & Month(d), 2) & "-" & Right("00" & Day(d), 2)
+filePath = path & "\LioranBoard" & "-" & dateStr
 
-'check if LB Receiver or Stream Deck is running and ask user to close it
+'Check if user placed the script in the right folder
+If NOT (filesys.FolderExists(path & "\LioranBoard Receiver(PC)")) Then
+WScript.Echo "LioranBoard Receiver(PC) folder not found. Place autoUpdater.vbs in lioranboard folder and try again."
+WScript.Quit
+End If
+
+'Check if LB Receiver or Stream Deck is running and ask user to close it
 Set proc = objWMIService.ExecQuery("select * from Win32_Process Where Name='LioranBoard Receiver.exe'")
 If proc.count > 0 Then 
 WScript.Echo "Please close LioranBoard Receiver and try again!"
 WScript.Quit
-end if
+End If
 Set proc = objWMIService.ExecQuery("select * from Win32_Process Where Name='LioranBoard Stream Deck.exe'")
 If proc.count > 0 Then 
 WScript.Echo "Please close LioranBoard Stream Deck and try again!"
 WScript.Quit
-end if
+End If
 
+'force console and start progress bar
 ForceConsole()
-
 Call progress(0, 100)
-
-'Set Paths
-path = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName)
-d = Date()
-'Set new folder name to current date
-dateStr = Year(d) & "-" & Right("00" & Month(d), 2) & "-" & Right("00" & Day(d), 2)
-filePath = path & "\LioranBoard" & "-" & dateStr
 
 'Download zip file
 xHttp.Open "GET", "http://lioran.servehttp.com/share/lioranboard/lioranboard.zip", False
@@ -78,14 +84,14 @@ WScript.StdOut.WriteLine "Error downloading the file: " & xHttp.statusText & ". 
 WScript.StdOut.WriteLine "Press [ENTER] to close this window..."
 WScript.StdIn.ReadLine
 WScript.Quit
-end if
+End If
 
-with bStrm
+With bStrm
     .type = 1 
     .open
     .write xHttp.responseBody
     .savetofile filePath & ".zip", 2
-end with
+end With
 
 Call progress(20, 100)
 
@@ -105,12 +111,12 @@ objShell.NameSpace(ExtractTo).CopyHere(FilesInZip)
 Call progress(50, 100)
 
 'Copy files
-if filesys.FileExists(path & "\LioranBoard Receiver(PC)\LioranBoard Receiver.exe") then
+If filesys.FileExists(path & "\LioranBoard Receiver(PC)\LioranBoard Receiver.exe") Then
   filesys.DeleteFile path & "\LioranBoard Receiver(PC)\LioranBoard Receiver.exe", True
-end if
-if filesys.FileExists(path & "\LioranBoard Receiver(PC)\data.win") then
+End If
+If filesys.FileExists(path & "\LioranBoard Receiver(PC)\data.win") Then
   filesys.DeleteFile path & "\LioranBoard Receiver(PC)\data.win", True
-end if
+End If
 filesys.CopyFile filePath & "\LioranBoard Receiver(PC)\LioranBoard Receiver.exe", path & "\LioranBoard Receiver(PC)\LioranBoard Receiver.exe", True 
 Call progress(60, 100)
 filesys.CopyFile filePath & "\LioranBoard Receiver(PC)\data.win", path & "\LioranBoard Receiver(PC)\data.win", True 
