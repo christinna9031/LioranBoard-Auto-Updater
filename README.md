@@ -1,7 +1,7 @@
 # LioranBoard-Auto-Updater
 Auto updates your LioranBoard to the newest version. Extremely safe, does not touch your Transmitter, deck files or extensions. 
 
-1. Download autoUpdater.vbs from the releases section
+1. Download autoUpdater.vbs from the [releases section](https://github.com/christinna9031/LioranBoard-Auto-Updater/releases)
 2. Place autoUpdater.vbs in your lioranboard folder
 3. Close any currently running instances of LioranBoard Receiver or Stream Deck on your PC.
 4. Launch autoUpdater.vbs
