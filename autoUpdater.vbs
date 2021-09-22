@@ -73,7 +73,6 @@ End If
 
 ForceConsole()
 WScript.StdOut.WriteLine "Downloading the files. Please wait..."
-WScript.StdOut.WriteLine ""
 Call progress(0, 100)
 
 'Download zip file
