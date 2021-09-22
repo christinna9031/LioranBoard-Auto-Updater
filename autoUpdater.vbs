@@ -1,3 +1,4 @@
+'LioranBoard Auto Updater by Christina K, V1.0
 set xHttp = CreateObject("Microsoft.XMLHTTP")
 set bStrm = CreateObject("Adodb.Stream")
 set filesys = CreateObject("Scripting.FileSystemObject")
@@ -70,14 +71,18 @@ WScript.Echo "Please close LioranBoard Stream Deck and try again!"
 WScript.Quit
 End If
 
-'force console and start progress bar
 ForceConsole()
+WScript.StdOut.WriteLine "Downloading the files. Please wait..."
+WScript.StdOut.WriteLine ""
 Call progress(0, 100)
 
 'Download zip file
 xHttp.Open "GET", "http://lioran.servehttp.com/share/lioranboard/lioranboard.zip", False
 on error resume next
 xHttp.Send
+
+Call progress(10, 100)
+
 If(xHttp.Status <> 200) Then
 WScript.StdOut.WriteLine " "
 WScript.StdOut.WriteLine "Error downloading the file: " & xHttp.statusText & ". Server might be temporarily down. Please try again later!"
