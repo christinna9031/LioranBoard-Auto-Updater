@@ -5,9 +5,10 @@ Auto updates your LioranBoard to the newest version. Extremely safe, does not to
 2. Place autoUpdater.vbs in your lioranboard folder
 3. Close any currently running instances of LioranBoard Receiver or Stream Deck on your PC.
 4. Launch autoUpdater.vbs
-5. Wait until the progress bar reaches 100% and you see 'LioranBoard Auto Update Complete!'. 
-6. Your LioranBoard is now updated! 
-7. Repeat the process whenever there's a new update.
+5. Wait until the progress bar reaches 100% and you see 'LioranBoard Auto Update Complete!'.\
+   *Note: It might seem the updater is stuck while it's downloading the file. That's normal, give it some time.*
+7. Your LioranBoard is now updated! 
+8. Repeat the process whenever there's a new update.
 
 **WHAT GETS UPDATED** 
 - LioranBoard Receiver 
